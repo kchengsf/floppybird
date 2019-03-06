@@ -14,6 +14,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+var metricPrefix = 'floppyBoi.';
 
 var debugmode = false;
 var userIdReferenceKey = 'floppyUID';
@@ -268,7 +269,12 @@ function gameloop() {
 //Handle space bar
 $(document).keydown(function(e){
    //space bar!
-   console.log("I pressed a key!");
+   client.send({
+	   counters:[
+		   { metric: metricPrefix + 'actionstaken',
+		     value: 1 
+		   }]});
+
    if(e.keyCode == 32)
    {
       //in ScoreScreen, hitting space should click the "replay" button. else it's just a regular spacebar hit
