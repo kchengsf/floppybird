@@ -16,6 +16,21 @@
 */
 
 var debugmode = false;
+var userIdReferenceKey = 'floppyUID';
+var userId = localStorage.getItem(userIdReferenceKey);
+if(!userId) {
+  userId = Date.now();
+  localStorage.setItem(userIdReferenceKey, userId);
+}
+console.log('User ID is '+userId);
+var client = new signalfx.ingest.Ingest('ATOKEN', {
+ingestEndpoint:'https://ingest.signalfx.com',
+timeout: 1000,
+dimensions : {
+  userId : userId
+}
+});
+
 
 var states = Object.freeze({
    SplashScreen: 0,
