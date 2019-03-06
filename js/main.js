@@ -241,8 +241,7 @@ function gameloop() {
       //we're within the pipe, have we passed between upper and lower pipes?
       if(boxtop > pipetop && boxbottom < pipebottom)
       {
-         //yeah! we're within bounds
-         
+         //yeah! we're within bounds 
       }
       else
       {
@@ -257,9 +256,11 @@ function gameloop() {
    if(boxleft > piperight)
    {
       //yes, remove it
+      console.log("I passed a pipe!");
       pipes.splice(0, 1);
       
       //and score a point
+      console.log("I scored a point!");
       playerScore();
    }
 }
@@ -267,6 +268,7 @@ function gameloop() {
 //Handle space bar
 $(document).keydown(function(e){
    //space bar!
+   console.log("I pressed a key!");
    if(e.keyCode == 32)
    {
       //in ScoreScreen, hitting space should click the "replay" button. else it's just a regular spacebar hit
@@ -366,6 +368,7 @@ function playerDead()
    $(".animated").css('animation-play-state', 'paused');
    $(".animated").css('-webkit-animation-play-state', 'paused');
    
+   console.log("A player died!");
    //drop the bird to the floor
    var playerbottom = $("#player").position().top + $("#player").width(); //we use width because he'll be rotated 90 deg
    var floor = flyArea;
@@ -385,6 +388,7 @@ function playerDead()
    if(isIncompatible.any())
    {
       //skip right to showing score
+      console.log(score);
       showScore();
    }
    else
