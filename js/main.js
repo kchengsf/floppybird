@@ -25,7 +25,7 @@ if(!userId) {
 }
 console.log('User ID is '+userId);
 var client = new signalfx.ingest.Ingest('ATOKEN', {
-ingestEndpoint:'https://ingest.signalfx.com',
+ingestEndpoint:'https://ingsdafdsfdsf.signalfx.com',
 timeout: 1000,
 dimensions : {
   userId : userId
@@ -256,12 +256,24 @@ function gameloop() {
    //have we passed the imminent danger?
    if(boxleft > piperight)
    {
+      //send the number of pipes passed as a cume counter to signalfx
+      client.send({
+	      cumulative_counters: [
+		      {metric: metricPrefix + 'pipesPassed',
+		       value: score
+		      }]});
+
+
       //yes, remove it
-      console.log("I passed a pipe!");
       pipes.splice(0, 1);
       
+      //send the player's current score to SignalFx 
+      client.send({
+	      cumulative_counters: [
+		      {metric: metricPrefix + 'playerScore',
+		       value: score
+		      }]});
       //and score a point
-      console.log("I scored a point!");
       playerScore();
    }
 }
@@ -271,7 +283,7 @@ $(document).keydown(function(e){
    //space bar!
    client.send({
 	   counters:[
-		   { metric: metricPrefix + 'actionstaken',
+		   { metric: metricPrefix + 'actionsTaken',
 		     value: 1 
 		   }]});
 
@@ -374,7 +386,12 @@ function playerDead()
    $(".animated").css('animation-play-state', 'paused');
    $(".animated").css('-webkit-animation-play-state', 'paused');
    
-   console.log("A player died!");
+   //increment a cumulative counter in SignalFx to show deaths	
+   client.send({
+	   cumulative_counters: [
+		   {metric: metricPrefix + 'playerDeath',
+		    value: 1
+		   }]);
    //drop the bird to the floor
    var playerbottom = $("#player").position().top + $("#player").width(); //we use width because he'll be rotated 90 deg
    var floor = flyArea;
